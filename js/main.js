@@ -42,7 +42,7 @@ function gotBuffers( buffers ) {
 
     drawBuffer( canvas.width, canvas.height, canvas.getContext('2d'), buffers[0] );
 
-    // the ONLY time gotBuffers is called is right after a new recording is completed - 
+    // the ONLY time gotBuffers is called is right after a new recording is completed -
     // so here's where we should set up the download.
     audioRecorder.exportWAV( doneEncoding );
 }
@@ -98,7 +98,7 @@ function updateAnalysers(time) {
         var numBars = Math.round(canvasWidth / SPACING);
         var freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
 
-        analyserNode.getByteFrequencyData(freqByteData); 
+        analyserNode.getByteFrequencyData(freqByteData);
 
         analyserContext.clearRect(0, 0, canvasWidth, canvasHeight);
         analyserContext.fillStyle = '#F6D565';
@@ -118,7 +118,7 @@ function updateAnalysers(time) {
             analyserContext.fillRect(i * SPACING, canvasHeight, BAR_WIDTH, -magnitude);
         }
     }
-    
+
     rafID = window.requestAnimationFrame( updateAnalysers );
 }
 
@@ -159,28 +159,46 @@ function gotStream(stream) {
 }
 
 function initAudio() {
-        if (!navigator.getUserMedia)
-            navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-        if (!navigator.cancelAnimationFrame)
-            navigator.cancelAnimationFrame = navigator.webkitCancelAnimationFrame || navigator.mozCancelAnimationFrame;
-        if (!navigator.requestAnimationFrame)
-            navigator.requestAnimationFrame = navigator.webkitRequestAnimationFrame || navigator.mozRequestAnimationFrame;
+    if (!navigator.getUserMedia)
+        navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+    if (!navigator.cancelAnimationFrame)
+        navigator.cancelAnimationFrame = navigator.webkitCancelAnimationFrame || navigator.mozCancelAnimationFrame;
+    if (!navigator.requestAnimationFrame)
+        navigator.requestAnimationFrame = navigator.webkitRequestAnimationFrame || navigator.mozRequestAnimationFrame;
+
+    var mandatory = {};
+
+    if (/noAGC/.test(location.href)) {
+        mandatory.googAutoGainControl = false;
+    }
+
+    if (/noEcho/.test(location.href)) {
+        mandatory.googEchoCancellation = false;
+    }
+
+    if (/noNoise/.test(location.href)) {
+        mandatory.googNoiseSuppression = false;
+    }
+
+    if (/noHFilter/.test(location.href)) {
+        mandatory.googHighpassFilter = false;
+    }
+
+    console.log('Audio mandatory', mandatory);
 
     navigator.getUserMedia(
         {
             "audio": {
-                "mandatory": {
-                    "googEchoCancellation": "false",
-                    "googAutoGainControl": "false",
-                    "googNoiseSuppression": "false",
-                    "googHighpassFilter": "false"
-                },
+                "mandatory": mandatory,
                 "optional": []
-            },
-        }, gotStream, function(e) {
+            }
+        }
+        , gotStream
+        , function (e) {
             alert('Error getting audio');
             console.log(e);
-        });
+        }
+    );
 }
 
 window.addEventListener('load', initAudio );

@@ -9,8 +9,8 @@
 	<script src="js/main.js"></script>
 	<style>
 	html { overflow: hidden; }
-	body { 
-		font: 14pt Arial, sans-serif; 
+	body {
+		font: 14pt Arial, sans-serif;
 		background: lightgrey;
 		display: flex;
 		flex-direction: column;
@@ -18,11 +18,11 @@
 		width: 100%;
 		margin: 0 0;
 	}
-	canvas { 
-		display: inline-block; 
-		background: #202020; 
+	canvas {
+		display: inline-block;
+		background: #202020;
 		width: 95%;
-		height: 45%;
+		height: 43%;
 		box-shadow: 0px 0px 10px blue;
 	}
 	#controls {
@@ -34,11 +34,11 @@
 		width: 100%;
 	}
 	#record { height: 15vh; }
-	#record.recording { 
+	#record.recording {
 		background: red;
-		background: -webkit-radial-gradient(center, ellipse cover, #ff0000 0%,lightgrey 75%,lightgrey 100%,#7db9e8 100%); 
-		background: -moz-radial-gradient(center, ellipse cover, #ff0000 0%,lightgrey 75%,lightgrey 100%,#7db9e8 100%); 
-		background: radial-gradient(center, ellipse cover, #ff0000 0%,lightgrey 75%,lightgrey 100%,#7db9e8 100%); 
+		background: -webkit-radial-gradient(center, ellipse cover, #ff0000 0%,lightgrey 75%,lightgrey 100%,#7db9e8 100%);
+		background: -moz-radial-gradient(center, ellipse cover, #ff0000 0%,lightgrey 75%,lightgrey 100%,#7db9e8 100%);
+		background: radial-gradient(center, ellipse cover, #ff0000 0%,lightgrey 75%,lightgrey 100%,#7db9e8 100%);
 	}
 	#save, #save img { height: 10vh; }
 	#save { opacity: 0.25;}
@@ -57,10 +57,25 @@
 		#viz { height: 100%; width: 90%;}
 	}
 
+    #help {
+        font-size: 14px;
+        width: 95%;
+        align-items: left;
+    }
+
 	</style>
 </head>
 <body>
 	<div id="viz">
+        <div id="help">
+            <div>Add get params into url to disable audio options:</div>
+            <div>
+                noAGC - AutoGainControl,
+                noEcho - EchoCancellation,
+                noNoise - NoiseSuppression,
+                noHFilter - HighpassFilter
+            </div>
+        </div>
 		<canvas id="analyser" width="1024" height="500"></canvas>
 		<canvas id="wavedisplay" width="1024" height="500"></canvas>
 	</div>
